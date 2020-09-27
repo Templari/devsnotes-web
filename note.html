@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minhas Notas | Devsnotes</title>
+  <title> | Devsnotes</title>
   <script src="js/util.js"></script>
   <script src="js/token.js"></script>
   <script>
@@ -19,15 +19,39 @@
   <main>
     <div class="container">
 
-      <div class="notes">
-        <h1>Minhas Notas</h1>
-
-        <ul class="list"></ul>
+      <div class="note">
+        <h1 class="title"></h1>
+        <p class="created_by">Autor: <span></span></p>
+        <p class="body"></p>
       </div>
+
+      <a href="notes.html" class="btn btn-primary">Voltar</a>
     </div>
   </main>
 
-  <script src="js/notes.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search)
+    let id = urlParams.get('id')
+
+    if (! id) {
+      window.location = 'notes.html'
+    }
+
+    let url = `http://localhost:8000/api/note/${id}`
+    ajax(url, 'GET', show, null, token)
+
+    function show(res) {
+      res = JSON.parse(res)
+      let note = res['note']
+      console.log(note)
+
+      document.title = note['title'] + ' ' + document.title
+
+      document.querySelector('.note .title').innerHTML = note['title']
+      document.querySelector('.note .created_by span').innerHTML = note['created_by']
+      document.querySelector('.note .body').innerHTML = note['body']
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>

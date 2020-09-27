@@ -2,8 +2,8 @@ const form = document.querySelector('form')
 const Validator = {
   handleSubmit: (event) => {
     event.preventDefault()
-
-    let inputs = form.querySelectorAll('input')
+    let method = form.method
+    method = method.value ? method.value : method
     let submit = form.querySelector('button[type=submit]')
     
     // Limpar mensagens de erro, se houver
@@ -11,7 +11,9 @@ const Validator = {
 
     submit.disabled = true
 
-    ajax(form.dataset.url, form.method, (res) => {
+    ajax(form.dataset.url, method, (res) => {
+      submit.disabled = false
+      console.log(res)
       res = JSON.parse(res)
       console.log(res)
 
@@ -20,8 +22,8 @@ const Validator = {
         // Registro
         if (typeof(res['error']) == 'object') {
           for (let name in res['error']) {
-            console.log(name)
-            Validator.showError(form.querySelector(`#${name}`), res['error'][name])
+            let error = res['error'][name][0]
+            Validator.showError(form.querySelector(`#${name}`), error)
           }
         }
         // Login
@@ -30,14 +32,16 @@ const Validator = {
         }
       }
 
-      submit.disabled = false
-
       if (res['token']) {
-        // TODO: salvar token em um cookie
         console.log(res['token'])
-        form.submit()
+        // TODO: salvar token em um cookie
+        setCookie('token', res['token'], 1)
+        // form.submit()
+        window.location = form.action
       }
-    })
+
+      return false
+    }, form)
   },
   showError: (ipt, errorMessage) => {
     ipt.classList.add('is-invalid')
