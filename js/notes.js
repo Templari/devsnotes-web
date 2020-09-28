@@ -1,11 +1,8 @@
 if (token) {
-    ajax('http://localhost:8000/api/notes', 'GET', listNotes, null, token)
+  ajax('http://localhost:8000/api/notes', 'GET', listNotes, null, token)
 }
 
 function listNotes(res) {
-  res = JSON.parse(res)
-  console.log(res)
-
   let notes = res['notes']
   
   if (! notes) {
