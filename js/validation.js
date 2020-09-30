@@ -1,8 +1,8 @@
 const Validator = {
-  handleSubmit: (event, form, callback, token) => {
+  handleSubmit: (event, form = null, callback = false, token = false) => {
     event.preventDefault()
     Validator.clearErrors()
-    return runAjax(form, callback, token)
+    return form ? runAjax(form, callback, token) : false
   },
   showError: (ipt, errorMessage) => {
     ipt.classList.add('is-invalid')

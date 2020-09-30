@@ -6,15 +6,19 @@ function runAjax (form, callback, token = false) {
   submit.disabled = true
 
   ajax(form.dataset.url, method, (json, status) => {
-    if (callback(json, status)) {
-      window.location = form.action
+    if (typeof callback === 'function') {
+      if (callback(json, status) === false) {
+        return false
+      }
     }
+
+    window.location = form.action
   }, form, token)
 
   return false
 }
 
-function ajax(url, method, callback, form = false, token = false, lang = 'pt_BR') {
+function ajax(url, method, callback, form = null, token = false, lang = 'pt_BR') {
   let formData = form ? new FormData(form) : null;
 
   let request = new XMLHttpRequest();

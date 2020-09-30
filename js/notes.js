@@ -4,11 +4,15 @@ if (token) {
 
 function listNotes(res) {
   let notes = res['notes']
+  let div = document.querySelector('.notes')
   
   if (! notes) {
-    let div = document.querySelector('.notes')
-    div.innerHTML += `<p>Você ainda não possui notas.</p>`
+    div.innerHTML += `<p>Suas notas aparecerão aqui.</p>`
     return false
+  }
+
+  if (notes.length == 0) {
+    div.innerHTML += `<p>Você ainda não possui notas.</p>`
   }
 
   let list = document.querySelector('.notes ul.list')

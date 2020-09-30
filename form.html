@@ -25,17 +25,17 @@
 <body>
   <main>
     <div class="container">
-      <h1 id="page-title">Note</h1>
+      <h1 id="page-title">Nota</h1>
 
       <form action="notes.html" method="POST" data-url="http://localhost:8000/api/note">
         <div class="card">
           <div class="card-body">
             <div class="form-group">
-              <input type="text" name="title" placeholder="Titulo" class="form-control">
+              <input type="text" autocomplete="off" autofocus name="title" placeholder="Titulo" class="form-control">
             </div>
 
             <div class="form-group">
-              <textarea name="" cols="30" rows="10" placeholder="Deixe uma descrição" class="form-control"></textarea>
+              <textarea name="body" cols="30" rows="10" placeholder="Deixe uma descrição" class="form-control"></textarea>
             </div>
           </div>
 
@@ -45,15 +45,13 @@
         </div>
       </form>
   </main>
-  <script>
-    let note = null
-    let title = document.querySelector('#page-title')
-
-    title.innerHTML = id ? note['title'] : document.title.substring(0, document.title.indexOf('|')) 
-  </script>
   <script src="js/validation.js"></script>
   <script>
     const form = document.querySelector('form')
+    form.dataset.url += `/${id}`
+    
+    ajax(form.dataset.url, 'GET', updateFields, null, token)
+    
     form.addEventListener('submit', e => Validator.handleSubmit(e, form, processNote, token))
 
     function processNote(res, status) {
@@ -69,6 +67,24 @@
       }
 
       return status == 200
+    }
+
+    function updateFields(res, status) {
+      let note = res['note']
+      let title = document.querySelector('#page-title')
+
+      if (note) {
+        title.innerHTML = note['title']
+
+        form.title.value = note['title']
+        form.body.innerHTML = note['body']
+
+        let eMethod = document.createElement('input')
+        eMethod.type = 'hidden'
+        eMethod.name = 'method'
+        eMethod.value = 'PUT'
+        form.appendChild(eMethod)
+      }
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
