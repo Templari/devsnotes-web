@@ -1,22 +1,28 @@
 const Validator = {
   handleSubmit: (event, form = null, callback = false, token = false) => {
     event.preventDefault()
-    Validator.clearErrors()
+    Validator.clearErrors(form)
     return form ? runAjax(form, callback, token) : false
   },
   showError: (ipt, errorMessage) => {
+    if (! ipt) {
+      return false
+    }
+
     ipt.classList.add('is-invalid')
 
-    if (errorMessage) {
-      let eError = document.createElement('div')
-      eError.classList.add('error')
-      eError.classList.add('text-danger')
-      eError.innerHTML = errorMessage
+    let eError = document.createElement('div')
+    eError.classList.add('error')
+    eError.classList.add('text-danger')
+    eError.innerHTML = errorMessage ?? ''
 
-      ipt.parentElement.insertBefore(eError, ipt.nextElementSibling)
-    }
+    ipt.parentElement.insertBefore(eError, ipt.nextElementSibling)
   },
-  clearErrors: () => {
+  clearErrors: (form) => {
+    if (! form) {
+      return false
+    }
+
     let inputs = form.querySelectorAll('input')
     let errors = form.querySelectorAll('.error')
 

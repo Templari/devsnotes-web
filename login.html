@@ -61,9 +61,6 @@
     form.addEventListener('submit', e => Validator.handleSubmit(e, form, processLogin))
 
     function processLogin(res) {
-      let submit = form.querySelector('*[type=submit]')
-      submit.disabled = false
-
       Validator.showError(form.querySelector('#email'), res['error'])
 
       return authenticate(res['token'])

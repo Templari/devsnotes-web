@@ -54,14 +54,17 @@
     formDelete.dataset.url = url
     formDelete.addEventListener('submit', e => {
       if (confirm('Deseja mesmo apagar a nota?')) {
-        return Validator.handleSubmit(e, formDelete, () => console.log('Deletou'), token)
+        return Validator.handleSubmit(e, formDelete, () => {}, token)
       }
       return Validator.handleSubmit(e)
     })
 
     function show(res) {
       let note = res['note']
-      console.log(note)
+
+      if (! note) {
+        window.location = 'notes.html'
+      }
 
       document.title = note['title'] + ' ' + document.title
 

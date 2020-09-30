@@ -3,25 +3,47 @@ function runAjax (form, callback, token = false) {
   let submit = form.querySelector('*[type=submit]')
 
   method = method.value ? method.value : method
-  submit.disabled = true
+  
+  if (submit) {
+    submit.disabled = true
+  }
 
   ajax(form.dataset.url, method, (json, status) => {
-    if (typeof callback === 'function') {
-      if (callback(json, status) === false) {
-        return false
-      }
+    if (submit) {
+      submit.disabled = false
     }
 
-    window.location = form.action
+    if (typeof callback === 'function' && callback(json, status) === false) {
+      return false
+    }
+
+    if (status == 200) {
+      window.location = form.action
+    }
   }, form, token)
 
   return false
 }
 
 function ajax(url, method, callback, form = null, token = false, lang = 'pt_BR') {
-  let formData = form ? new FormData(form) : null;
+  let request = new XMLHttpRequest()
+  let formData = form ? new FormData(form) : null
+  
+  if (method == 'PUT' && form) {
+    url += '?'
+    let formInputs = form.querySelectorAll('input')
+    let formTextAreas = form.querySelectorAll('textarea')
 
-  let request = new XMLHttpRequest();
+    for (let i of formInputs) {
+      if (i.name == 'method') continue
+      url = addDataToURL(url, i.name, i.value)
+    }
+  
+    for (let i of formTextAreas) {
+      url = addDataToURL(url, i.name, i.value)
+    }
+  }
+
   request.overrideMimeType("application/json");
   request.open(method, url, true);
 
@@ -32,19 +54,29 @@ function ajax(url, method, callback, form = null, token = false, lang = 'pt_BR')
   request.setRequestHeader('Accept-Language', lang)
 
   request.onreadystatechange = () => {
-    if (request.readyState == 4) {
-      let res = []
+    let res = []
 
-      try {
-        res = JSON.parse(request.responseText)
-      } catch (e) {
-        console.warn(e)
-      }
-
-      callback(res, request.status)
+    if (request.readyState != 4) {
+      return false
     }
+
+    try {
+      res = JSON.parse(request.responseText)
+    } catch (e) {
+      console.warn(e)
+    }
+
+    if (request.status != 200) {
+      console.log(res, request.status)
+    }
+
+    callback(res, request.status)
   };
   request.send(formData);
+}
+
+function addDataToURL(url, name, value) {
+  return url + '&' + name + '=' + value
 }
 
 function deleteCookie(cname) {

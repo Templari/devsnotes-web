@@ -3,44 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minhas Notas | Devsnotes</title>
+  <title>Perfil | Devsnotes</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="js/util.js"></script>
-  <script src="js/auth.js"></script>
   <script src="js/token.js"></script>
   <script>
     if (! token) {
       window.location = 'login.html'
     }
   </script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main>
     <div class="container">
+      <h1>Perfil</h1>
 
-      <div class="notes">
-        <h1>Minhas Notas</h1>
-
-        <ul class="list"></ul>
+      <div class="name">Nome</div>
+      <div class="email">E-mail</div>
+      <div class="about">
+        Status:
+        <div class="notes">XX Notas salvas</div>
+        <div class="date">Registrou-se em XXXX</div>
       </div>
+
+      <a href="" class="btn btn-outline-primary">Editar Informações</a>
     </div>
-
-    <a href="form.html" class="btn btn-outline-success">Criar Nota</a>
-
-    <!-- TODO: Mover logout para a navbar geral -->
-    <form id="logout-form" action="index.html" method="POST" data-url-prod="https://tdevsnotes.herokuapp.com/api/auth/logout" data-url="http://localhost:8000/api/auth/logout">
-      <button type="submit" class="btn btn-outline-primary">Sair</button>
-    </form>
   </main>
 
-  <script src="js/validation.js"></script>
-  <script>
-    const logoutForm = document.querySelector('#logout-form')
-    logoutForm.addEventListener('submit', e => Validator.handleSubmit(e, logoutForm, logout, token))
-  </script>
-  <script src="js/notes.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
